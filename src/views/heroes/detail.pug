@@ -1,0 +1,67 @@
+extends ../layouts/main
+block content
+  article.hero-detail
+    .hero-cover
+      if hero.image_url
+        img(src=hero.image_url alt=hero.name)
+      else
+        .placeholder.large 🦸
+    .hero-info
+      h1= hero.name
+      if hero.full_name
+        p.muted= hero.full_name
+      .meta
+        span.badge(class=hero.alignment)= hero.alignment
+        if hero.publisher
+          span.chip= hero.publisher
+        if hero.race
+          span.chip= hero.race
+        if hero.gender
+          span.chip= hero.gender
+      if hero.height_cm || hero.weight_kg
+        p.stats
+          if hero.height_cm
+            span Altura: #{hero.height_cm} cm
+          if hero.weight_kg
+            span Peso: #{hero.weight_kg} kg
+      if hero.powers && hero.powers.length
+        h3 Poderes
+        ul.powers
+          each p in hero.powers
+            li
+              strong= p.name
+              .bar
+                .fill(style=`width:${p.intensity}%`)
+              span.muted= `${p.intensity}/100`
+      if currentUser && currentUser.role === 'admin'
+        .admin-actions
+          a.btn-ghost(href=`/heroes/${hero.id}/edit`) Editar
+          form(action=`/heroes/${hero.id}?_method=DELETE` method="POST" onsubmit="return confirm('¿Eliminar?')")
+            button.btn-danger(type="submit") Eliminar
+
+  section.comments
+    h2 Comentarios (#{hero.comments?.length || 0})
+    if currentUser
+      form(action=`/heroes/${hero.id}/comments` method="POST" class="comment-form")
+        textarea(name="content" required maxlength="1000" placeholder="Escribe tu comentario...")
+        label
+          span Rating
+          select(name="rating")
+            each n in [5,4,3,2,1]
+              option(value=n)= `${n} ★`
+        button.btn-primary(type="submit") Publicar
+    else
+      p.muted #[a(href="/auth/login") Inicia sesión] para comentar.
+
+    if hero.comments && hero.comments.length
+      ul.comment-list
+        each c in hero.comments
+          li.comment
+            .comment-head
+              strong= c.author?.username || 'anónimo'
+              span.stars= '★'.repeat(c.rating)
+              time.muted= new Date(c.created_at).toLocaleString()
+            p= c.content
+            if currentUser && (currentUser.id === c.user_id || currentUser.role === 'admin')
+              form(action=`/comments/${c.id}?_method=DELETE` method="POST" style="display:inline")
+                button.btn-link.danger(type="submit") eliminar

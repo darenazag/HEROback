@@ -1,0 +1,68 @@
+extends layout
+
+block content
+  .hero-detail
+    .hero-detail-image
+      img(src=hero.image_url || '/placeholder.svg', alt=hero.name, onerror="this.src='/placeholder.svg'")
+    .hero-detail-info
+      h1= hero.name
+      .hero-meta
+        span.tag(class=hero.alignment)= hero.alignment
+        if hero.publisher
+          span.publisher= hero.publisher
+      
+      h2 Estadísticas
+      .stats-grid
+        .stat-item
+          span.stat-label Inteligencia
+          .stat-bar
+            .stat-fill(style=`width: ${hero.intelligence}%`)
+          span.stat-value= hero.intelligence
+        .stat-item
+          span.stat-label Fuerza
+          .stat-bar
+            .stat-fill(style=`width: ${hero.strength}%`)
+          span.stat-value= hero.strength
+        .stat-item
+          span.stat-label Velocidad
+          .stat-bar
+            .stat-fill(style=`width: ${hero.speed}%`)
+          span.stat-value= hero.speed
+        .stat-item
+          span.stat-label Durabilidad
+          .stat-bar
+            .stat-fill(style=`width: ${hero.durability}%`)
+          span.stat-value= hero.durability
+        .stat-item
+          span.stat-label Poder
+          .stat-bar
+            .stat-fill(style=`width: ${hero.power}%`)
+          span.stat-value= hero.power
+        .stat-item
+          span.stat-label Combate
+          .stat-bar
+            .stat-fill(style=`width: ${hero.combat}%`)
+          span.stat-value= hero.combat
+
+      .hero-actions
+        a.btn.btn-outline(href='/heroes') Volver al catálogo
+        if user
+          button.btn.add-hero-btn(data-hero-id=hero.id) Añadir a mi colección
+
+block scripts
+  script.
+    const btn = document.querySelector('.add-hero-btn');
+    if (btn) {
+      btn.addEventListener('click', async () => {
+        const heroId = btn.dataset.heroId;
+        try {
+          const res = await authFetch('/api/store/add-hero', {
+            method: 'POST',
+            body: JSON.stringify({ heroId: Number(heroId) }),
+          });
+          const data = await res.json();
+          if (res.ok) { btn.textContent = '✓ En tu colección'; btn.disabled = true; }
+          else alert(data.error);
+        } catch { alert('Error de red'); }
+      });
+    }

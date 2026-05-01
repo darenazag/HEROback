@@ -1,0 +1,18 @@
+extends layouts/main
+block content
+  section.hero-banner
+    h1 Bienvenido a #[span.text-accent HEROback]
+    p.lead Catálogo de superhéroes con autenticación, roles, comentarios y API REST documentada.
+    .cta
+      a.btn-primary(href="/heroes") Ver héroes
+      a.btn-ghost(href="/api/docs" target="_blank") API docs
+  section.features
+    .feature
+      h3 🔐 Autenticación
+      p Registro y login con JWT (API) y sesión (vistas).
+    .feature
+      h3 🛡️ Autorización
+      p Roles admin / user con permisos diferenciados.
+    .feature
+      h3 🦸 Héroes y poderes
+      p Modelo relacional con paginación, filtros y orden.

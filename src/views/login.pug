@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .auth-container
+    h1 Iniciar sesión
+    if error
+      .alert.alert-error= error
+    form(method='POST', action='/login')
+      .form-group
+        label(for='email') Email
+        input#email(type='email', name='email', required, autocomplete='email')
+      .form-group
+        label(for='password') Contraseña
+        input#password(type='password', name='password', required, autocomplete='current-password')
+      button.btn(type='submit') Entrar
+    p.auth-footer
+      | ¿No tienes cuenta? 
+      a(href='/register') Regístrate aquí

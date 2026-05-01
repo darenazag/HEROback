@@ -1,0 +1,50 @@
+extends layout
+
+block content
+  h1 Tienda
+  if user
+    p.coins-display Tus coins: 
+      strong= user.coins
+
+  .product-grid
+    each product in products
+      .product-card
+        if product.image_url
+          img(src=product.image_url, alt=product.name, onerror="this.src='/placeholder.svg'")
+        .product-body
+          h3= product.name
+          p= product.description
+          .product-footer
+            span.price #{product.price} coins
+            span.stock(class=product.stock > 0 ? 'in-stock' : 'out-stock')
+              = product.stock > 0 ? `Stock: ${product.stock}` : 'Agotado'
+            if user && product.stock > 0
+              button.btn.buy-btn(data-product-id=product.id, data-price=product.price) Comprar
+  
+  if !user
+    p.auth-prompt
+      | 
+      a(href='/login') Inicia sesión
+      |  para comprar en la tienda
+
+block scripts
+  script.
+    document.querySelectorAll('.buy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const productId = Number(btn.dataset.productId);
+        if (!confirm(`¿Confirmas la compra por ${btn.dataset.price} coins?`)) return;
+        try {
+          const res = await authFetch('/api/store/buy', {
+            method: 'POST',
+            body: JSON.stringify({ productId }),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            alert('Compra realizada. Coins restantes: ' + data.user.coins);
+            location.reload();
+          } else {
+            alert(data.error || 'Error al comprar');
+          }
+        } catch { alert('Error de red'); }
+      });
+    });

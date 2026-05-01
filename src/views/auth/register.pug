@@ -1,0 +1,16 @@
+extends ../layouts/main
+block content
+  .auth-card
+    h1 Crear cuenta
+    form(action="/auth/register" method="POST")
+      label
+        span Usuario
+        input(type="text" name="username" required minlength="3" maxlength="50" value=values?.username)
+      label
+        span Email
+        input(type="email" name="email" required value=values?.email)
+      label
+        span Contraseña
+        input(type="password" name="password" required minlength="6")
+      button.btn-primary(type="submit") Registrarme
+    p.muted ¿Ya tienes cuenta? #[a(href="/auth/login") Inicia sesión]

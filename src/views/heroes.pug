@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1 Catálogo de héroes
+  
+  form.filter-bar(method='GET', action='/heroes')
+    input(type='text', name='search', placeholder='Buscar por nombre...', value=query.search || '')
+    select(name='alignment')
+      option(value='') Todos los alignments
+      option(value='good', selected=query.alignment==='good') Héroes
+      option(value='bad',  selected=query.alignment==='bad')  Villanos
+      option(value='neutral', selected=query.alignment==='neutral') Neutrales
+    input(type='text', name='publisher', placeholder='Publisher...', value=query.publisher || '')
+    button.btn(type='submit') Filtrar
+
+  p.results-count
+    | Mostrando #{data.length} de #{pagination.total} héroes
+
+  .hero-grid
+    each hero in data
+      a.hero-card(href=`/heroes/${hero.id}`)
+        img(src=hero.image_url || '/placeholder.svg', alt=hero.name, onerror="this.src='/placeholder.svg'")
+        .hero-card-body
+          h3= hero.name
+          .hero-card-meta
+            span.tag(class=hero.alignment)= hero.alignment
+            if hero.publisher
+              span.publisher= hero.publisher
+
+  .pagination
+    if pagination.page > 1
+      a.btn.btn-outline(href=`/heroes?page=${pagination.page - 1}&search=${query.search || ''}&alignment=${query.alignment || ''}&publisher=${query.publisher || ''}`) Anterior
+    span Página #{pagination.page} de #{pagination.pages}
+    if pagination.page < pagination.pages
+      a.btn.btn-outline(href=`/heroes?page=${Number(pagination.page) + 1}&search=${query.search || ''}&alignment=${query.alignment || ''}&publisher=${query.publisher || ''}`) Siguiente

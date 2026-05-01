@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  .auth-container
+    h1 Crear cuenta
+    if error
+      .alert.alert-error= error
+    form(method='POST', action='/register')
+      .form-group
+        label(for='username') Nombre de usuario
+        input#username(type='text', name='username', required, minlength='3', autocomplete='username')
+      .form-group
+        label(for='email') Email
+        input#email(type='email', name='email', required, autocomplete='email')
+      .form-group
+        label(for='password') Contraseña (mínimo 6 caracteres)
+        input#password(type='password', name='password', required, minlength='6', autocomplete='new-password')
+      button.btn(type='submit') Registrarse
+    p.auth-footer
+      | ¿Ya tienes cuenta? 
+      a(href='/login') Inicia sesión aquí

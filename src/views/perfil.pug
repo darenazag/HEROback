@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  .auth-container
+    h1 Mi perfil
+    if success
+      .alert.alert-success= success
+    if error
+      .alert.alert-error= error
+    form(method='POST', action='/perfil')
+      .form-group
+        label Nombre de usuario
+        input(type='text', name='username', value=user.username, required, minlength='3')
+      .form-group
+        label Email
+        input(type='email', name='email', value=user.email, required)
+      .form-group
+        label Coins actuales
+        input(type='text', value=user.coins, disabled)
+      .form-group
+        label Rol
+        input(type='text', value=user.role, disabled)
+      button.btn(type='submit') Guardar cambios
+    p.auth-footer
+      a(href='/dashboard') Volver al dashboard

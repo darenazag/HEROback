@@ -1,0 +1,60 @@
+extends layout
+
+block content
+  .teams-page
+    .teams-header
+      h1 Mis equipos
+      button.btn#create-team-btn Crear equipo
+
+    if teams.length === 0
+      .empty-state
+        p Todavía no tienes equipos. ¡Crea el primero!
+
+    .teams-grid
+      each team in teams
+        .team-card
+          .team-card-header
+            h3= team.name
+            button.btn.btn-sm.delete-team-btn(data-team-id=team.id) Eliminar
+          .team-heroes
+            each th in team.TeamHeroes
+              if th.UserHero && th.UserHero.Hero
+                .team-hero-slot
+                  img(src=th.UserHero.Hero.image_url || '/placeholder.svg', alt=th.UserHero.Hero.name, onerror="this.src='/placeholder.svg'", title=th.UserHero.Hero.name)
+
+    .create-team-modal(style='display:none')
+      .modal-box
+        h2 Nuevo equipo
+        input#new-team-name(type='text', placeholder='Nombre del equipo')
+        button.btn#confirm-create Crear
+        button.btn.btn-outline#cancel-create Cancelar
+
+block scripts
+  script.
+    document.getElementById('create-team-btn').addEventListener('click', () => {
+      document.querySelector('.create-team-modal').style.display = 'flex';
+    });
+    document.getElementById('cancel-create').addEventListener('click', () => {
+      document.querySelector('.create-team-modal').style.display = 'none';
+    });
+    document.getElementById('confirm-create').addEventListener('click', async () => {
+      const name = document.getElementById('new-team-name').value.trim();
+      if (!name) { alert('Escribe un nombre'); return; }
+      const res = await authFetch('/api/teams', {
+        method: 'POST',
+        body: JSON.stringify({ name }),
+      });
+      if (res.ok) location.reload();
+      else { const d = await res.json(); alert(d.error); }
+    });
+
+    document.querySelectorAll('.delete-team-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('¿Eliminar este equipo?')) return;
+        const res = await authFetch(`/api/teams/${btn.dataset.teamId}`, {
+          method: 'DELETE',
+        });
+        if (res.ok) location.reload();
+        else { const d = await res.json(); alert(d.error); }
+      });
+    });

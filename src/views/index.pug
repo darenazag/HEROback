@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  section.hero-banner
+    h1 Bienvenido a HEROback
+    p Colecciona héroes, forma tu equipo y conquista la tienda.
+    a.btn(href='/heroes') Ver catálogo completo
+    if !user
+      a.btn.btn-outline(href='/register') Crear cuenta
+
+  section.featured
+    h2 Héroes destacados
+    .hero-grid
+      each hero in heroes
+        a.hero-card(href=`/heroes/${hero.id}`)
+          img(src=hero.image_url || '/placeholder.svg', alt=hero.name, onerror="this.src='/placeholder.svg'")
+          .hero-card-body
+            h3= hero.name
+            .hero-card-meta
+              span.tag(class=hero.alignment)= hero.alignment
+              if hero.publisher
+                span.publisher= hero.publisher

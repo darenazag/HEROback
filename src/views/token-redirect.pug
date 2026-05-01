@@ -1,0 +1,13 @@
+doctype html
+html(lang='es')
+  head
+    meta(charset='UTF-8')
+    title HEROback — Cargando...
+    if jwtToken
+      meta(name='jwt-token', content=jwtToken)
+    link(rel='stylesheet', href='/styles.css')
+  body
+    p Cargando...
+    script(src='/app.js')
+    script.
+      window.location.href = '#{redirectTo}';

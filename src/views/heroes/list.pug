@@ -1,0 +1,44 @@
+extends ../layouts/main
+block content
+  .page-header
+    h1 Catálogo de héroes
+    p.muted Total: #{pagination.total}
+  form.filters(method="GET" action="/heroes")
+    input(type="text" name="name__like" placeholder="Buscar por nombre" value=filters.name__like || '')
+    select(name="alignment")
+      option(value="") Alineamiento (todos)
+      option(value="good" selected=filters.alignment==='good') Bueno
+      option(value="bad" selected=filters.alignment==='bad') Malvado
+      option(value="neutral" selected=filters.alignment==='neutral') Neutral
+    input(type="text" name="publisher" placeholder="Editorial" value=filters.publisher || '')
+    select(name="sort")
+      option(value="name" selected=filters.sort==='name') Nombre ↑
+      option(value="-name" selected=filters.sort==='-name') Nombre ↓
+      option(value="-created_at" selected=filters.sort==='-created_at') Más recientes
+      option(value="-height_cm" selected=filters.sort==='-height_cm') Más altos
+    button.btn-primary(type="submit") Filtrar
+    a.btn-ghost(href="/heroes") Limpiar
+
+  .grid
+    each h in heroes
+      a.card(href=`/heroes/${h.id}`)
+        .card-img
+          if h.image_url
+            img(src=h.image_url alt=h.name loading="lazy")
+          else
+            .placeholder 🦸
+        .card-body
+          h3= h.name
+          p.muted= h.publisher || 'Sin editorial'
+          span.badge(class=h.alignment)= h.alignment
+
+  if heroes.length === 0
+    p.muted.center No se encontraron héroes con esos filtros.
+
+  nav.pagination
+    - var qs = (p) => { var o = Object.assign({}, filters, {page: p}); return Object.keys(o).filter(k=>o[k]!=='' && o[k]!=null).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(o[k])).join('&'); }
+    if pagination.page > 1
+      a(href=`?${qs(pagination.page - 1)}`) ← Anterior
+    span Página #{pagination.page} de #{pagination.totalPages}
+    if pagination.page < pagination.totalPages
+      a(href=`?${qs(pagination.page + 1)}`) Siguiente →

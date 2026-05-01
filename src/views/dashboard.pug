@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  .dashboard
+    h1 Dashboard
+    .dashboard-welcome
+      h2 Hola, #{user.username}
+      p.role-badge(class=user.role) #{user.role}
+
+    .stats-cards
+      .stat-card
+        span.stat-number= user.coins
+        span.stat-label Coins disponibles
+      .stat-card
+        a(href='/teams') Ver mis equipos
+        span.stat-label Equipos de combate
+
+    .dashboard-nav
+      a.btn(href='/perfil') Editar perfil
+      a.btn.btn-outline(href='/heroes') Explorar héroes
+      a.btn.btn-outline(href='/store') Ir a la tienda
+      a.btn.btn-outline(href='/teams') Mis equipos
+      if user.role === 'admin'
+        a.btn.admin-link(href='/admin') Panel de administración

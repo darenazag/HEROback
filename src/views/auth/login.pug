@@ -1,0 +1,13 @@
+extends ../layouts/main
+block content
+  .auth-card
+    h1 Iniciar sesión
+    form(action="/auth/login" method="POST")
+      label
+        span Email
+        input(type="email" name="email" required value=values?.email)
+      label
+        span Contraseña
+        input(type="password" name="password" required)
+      button.btn-primary(type="submit") Entrar
+    p.muted ¿No tienes cuenta? #[a(href="/auth/register") Regístrate]

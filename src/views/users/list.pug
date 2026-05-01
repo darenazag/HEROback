@@ -1,0 +1,20 @@
+extends ../layouts/main
+block content
+  h1 Usuarios
+  table.table
+    thead
+      tr
+        th ID
+        th Usuario
+        th Email
+        th Rol
+        th Creado
+    tbody
+      each u in users
+        tr
+          td= u.id
+          td= u.username
+          td= u.email
+          td
+            span.role-badge(class=u.role)= u.role
+          td= new Date(u.created_at).toLocaleDateString()

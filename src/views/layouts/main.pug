@@ -1,0 +1,14 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title= title ? `${title} · HEROback` : 'HEROback'
+    link(rel="stylesheet" href="/static/css/styles.css")
+  body
+    include ../partials/navbar
+    main.container
+      include ../partials/flash
+      block content
+    footer.footer
+      p © #{new Date().getFullYear()} HEROback · Datos de SuperHero API

@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  .admin-page
+    h1 Panel de administración
+
+    .stats-cards
+      .stat-card
+        span.stat-number= stats.totalUsers
+        span.stat-label Usuarios
+      .stat-card
+        span.stat-number= stats.totalHeroes
+        span.stat-label Héroes en BD
+      .stat-card
+        span.stat-number= stats.totalProducts
+        span.stat-label Productos
+      .stat-card
+        span.stat-number= stats.totalCollections
+        span.stat-label Héroes coleccionados
+
+    h2 Gestión de usuarios
+    table.admin-table
+      thead
+        tr
+          th ID
+          th Usuario
+          th Email
+          th Rol
+          th Coins
+          th Registrado
+          th Acciones
+      tbody
+        each u in users
+          tr
+            td= u.id
+            td= u.username
+            td= u.email
+            td
+              span.tag(class=u.role)= u.role
+            td= u.coins
+            td= u.created_at ? new Date(u.created_at).toLocaleDateString('es-ES') : '-'
+            td
+              if u.id !== user.id
+                form(method='POST', action=`/admin/users/${u.id}/delete`, onsubmit="return confirm('¿Eliminar usuario?')")
+                  button.btn.btn-danger(type='submit') Eliminar
+              else
+                span (tú)

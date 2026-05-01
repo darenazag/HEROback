@@ -1,0 +1,6 @@
+if flash && flash.success
+  .alert.alert-success= flash.success
+if flash && flash.error
+  .alert.alert-error= flash.error
+if typeof error !== 'undefined' && error
+  .alert.alert-error= error

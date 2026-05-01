@@ -1,0 +1,40 @@
+extends ../layouts/main
+block content
+  .auth-card.wide
+    h1= title
+    form(action=action method=method)
+      label
+        span Nombre *
+        input(type="text" name="name" required maxlength="120" value=hero.name || '')
+      label
+        span Nombre real
+        input(type="text" name="full_name" maxlength="150" value=hero.full_name || '')
+      label
+        span Editorial
+        input(type="text" name="publisher" maxlength="100" value=hero.publisher || '')
+      label
+        span Alineamiento
+        select(name="alignment")
+          - var aligns = ['good','bad','neutral']
+          each a in aligns
+            option(value=a selected=hero.alignment===a)= a
+      .row
+        label
+          span Género
+          input(type="text" name="gender" maxlength="20" value=hero.gender || '')
+        label
+          span Raza
+          input(type="text" name="race" maxlength="60" value=hero.race || '')
+      .row
+        label
+          span Altura (cm)
+          input(type="number" name="height_cm" min="0" max="500" value=hero.height_cm || '')
+        label
+          span Peso (kg)
+          input(type="number" name="weight_kg" min="0" max="1000" value=hero.weight_kg || '')
+      label
+        span URL imagen
+        input(type="url" name="image_url" value=hero.image_url || '')
+      .actions
+        button.btn-primary(type="submit") Guardar
+        a.btn-ghost(href="/heroes") Cancelar

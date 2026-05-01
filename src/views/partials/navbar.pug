@@ -1,0 +1,25 @@
+nav.navbar
+  .nav-inner
+    a.brand(href="/")
+      span.logo 🦸
+      span HEROback
+    ul.nav-links
+      li
+        a(href="/heroes") Héroes
+      if currentUser
+        if currentUser.role === 'admin'
+          li
+            a(href="/heroes/new") + Nuevo
+          li
+            a(href="/admin/users") Usuarios
+        li.user-info
+          | Hola, #{currentUser.username}
+          span.role-badge(class=currentUser.role)= currentUser.role
+        li
+          form(action="/auth/logout" method="POST" style="display:inline")
+            button.btn-link(type="submit") Cerrar sesión
+      else
+        li
+          a(href="/auth/login") Login
+        li
+          a.btn-primary(href="/auth/register") Registro
