@@ -10,7 +10,8 @@ export default (sequelize) => {
         {
             id: {
                 type: DataTypes.INTEGER,
-                autoIncrement: true, primaryKey: true
+                autoIncrement: true,
+                primaryKey: true
             },
             hero_id: {
                 type: DataTypes.INTEGER,
@@ -29,7 +30,11 @@ export default (sequelize) => {
                 defaultValue: 50
             },
         },
-        { sequelize, modelName: 'Power', tableName: 'powers' }
+        {
+            sequelize,
+            modelName: 'Power',
+            tableName: 'powers'
+        }
     );
 
     Power.associate = (models) => {

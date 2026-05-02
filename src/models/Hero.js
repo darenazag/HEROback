@@ -10,11 +10,13 @@ export default (sequelize) => {
         {
             id: {
                 type: DataTypes.INTEGER,
-                autoIncrement: true, primaryKey: true
+                autoIncrement: true,
+                primaryKey: true
             },
             external_id: {
                 type: DataTypes.STRING(20),
-                unique: true, comment: 'ID en SuperHero API'
+                unique: true,
+                comment: 'ID en SuperHero API'
             },
             name: {
                 type: DataTypes.STRING(120),
@@ -55,7 +57,11 @@ export default (sequelize) => {
                 type: DataTypes.TEXT
             },
         },
-        { sequelize, modelName: 'Hero', tableName: 'heroes' }
+        {
+            sequelize,
+            modelName: 'Hero',
+            tableName: 'heroes'
+        }
     );
 
     Hero.associate = (models) => {
@@ -66,7 +72,8 @@ export default (sequelize) => {
         });
         Hero.hasMany(models.Comment, {
             foreignKey: 'hero_id',
-            as: 'comments', onDelete: 'CASCADE'
+            as: 'comments',
+            onDelete: 'CASCADE'
         });
     };
 

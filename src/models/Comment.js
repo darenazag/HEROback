@@ -10,7 +10,8 @@ export default (sequelize) => {
         {
             id: {
                 type: DataTypes.INTEGER,
-                autoIncrement: true, primaryKey: true
+                autoIncrement: true,
+                primaryKey: true
             },
             user_id: {
                 type: DataTypes.INTEGER,
@@ -31,17 +32,20 @@ export default (sequelize) => {
             },
         },
         {
-            sequelize, modelName: 'Comment',
+            sequelize,
+            modelName: 'Comment',
             tableName: 'comments'
         }
     );
 
     Comment.associate = (models) => {
         Comment.belongsTo(models.User, {
-            foreignKey: 'user_id', as: 'user'
+            foreignKey: 'user_id',
+            as: 'user'
         });
         Comment.belongsTo(models.Hero, {
-            foreignKey: 'hero_id', as: 'hero'
+            foreignKey: 'hero_id',
+            as: 'hero'
         });
     };
 

@@ -27,7 +27,11 @@ const swaggerSpec = swaggerJSDoc({
             schemas: {
                 Error: {
                     type: 'object',
-                    properties: { error: { type: 'string' } },
+                    properties: {
+                        error: {
+                            type: 'string'
+                        }
+                    },
                 },
                 Hero: {
                     type: 'object',

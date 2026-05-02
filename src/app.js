@@ -1,5 +1,6 @@
 /**
  * @file Configuración principal de Express (ESM).
+ * Monta API REST + vistas Pug, sesiones, flash y Swagger.
  */
 import express from 'express';
 import path from 'node:path';
@@ -12,13 +13,15 @@ import flash from 'connect-flash';
 import methodOverride from 'method-override';
 import swaggerUi from 'swagger-ui-express';
 
-import apiRoutes from './routes/api/index.js';
-import webRoutes from './routes/web/index.js';
+import apiRoutes from './routes/index.js';
+import viewRoutes from './routes/viewRoutes.js';
+import { injectUser } from './middlewares/sessionMiddleware.js';
 import { notFound, errorHandler } from './middlewares/errorHandler.js';
 import { swaggerSpec } from './config/swagger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, '..');
 
 const app = express();
 
@@ -33,7 +36,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(methodOverride('_method'));
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Estáticos desde la carpeta /public en la raíz del proyecto
+app.use(express.static(path.join(projectRoot, 'public')));
 
 app.use(
     session({
@@ -45,18 +50,22 @@ app.use(
 );
 app.use(flash());
 
-// Variables globales para vistas
+// Variables globales para vistas (user en navbar, mensajes flash, etc.)
+app.use(injectUser);
 app.use((req, res, next) => {
-    res.locals.currentUser = req.session?.user || null;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 });
 
-// Rutas
-app.use('/api', apiRoutes);
+// Documentación API
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/', webRoutes);
+
+// Rutas API (REST con JWT)
+app.use('/api', apiRoutes);
+
+// Rutas web (vistas Pug con sesión)
+app.use('/', viewRoutes);
 
 // 404 + errores
 app.use(notFound);

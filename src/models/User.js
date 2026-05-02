@@ -72,7 +72,8 @@ export default (sequelize) => {
     User.associate = (models) => {
         User.hasMany(models.Comment, {
             foreignKey: 'user_id',
-            as: 'comments', onDelete: 'CASCADE'
+            as: 'comments',
+            onDelete: 'CASCADE'
         });
     };
 
