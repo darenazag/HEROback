@@ -30,11 +30,6 @@ La tienda es solo una parte de un sistema más grande, donde la lógica principa
 
 ---
 
-## Previews
-
-![Landing](img/landing.png) | ![Catálogo](img/catalogo_filtro.png) | ![Detalle](img/detalle_heroe.png) | ![Tienda](img/tienda.png) | ![Login](img/login.png) | ![Registro](img/registro.png) | ![Panel_usuario](img/panle_usuario.png) | ![Panel_admin](img/panel_admin.png)
-
-
 ## Características
 
 - 🔐 **Autenticación dual:** sesiones (Pug) + JWT (API REST).
