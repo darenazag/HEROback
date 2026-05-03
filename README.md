@@ -15,6 +15,7 @@ La tienda es solo una parte de un sistema más grande, donde la lógica principa
 
 ## 📋 Tabla de contenidos
 
+- [Previews](#previews)
 - [Características](#características)
 - [Requisitos](#requisitos)
 - [Instalación rápida](#instalación-rápida)
@@ -28,6 +29,11 @@ La tienda es solo una parte de un sistema más grande, donde la lógica principa
 - [Scripts](#scripts)
 
 ---
+
+## Previews
+
+![Landing](images/landing.png) | ![Catálogo](images/catalogo_filtro.png) | ![Detalle](images/detalle_heroe.png) | ![Tienda](images/tienda.png) | ![Login](images/login.png) | ![Registro](images/registro.png) | ![Panel_usuario](images/panle_usuario.png) | ![Panel_admin](images/panel_admin.png)
+
 
 ## Características
 
@@ -206,10 +212,6 @@ heroback/
 | GET    | `/api/users`         | admin    |
 | DELETE | `/api/users/:id`     | admin    |
 | GET    | `/api/admin/stats`   | admin    |
-
-> 👉 **3 endpoints con modificación de BD obligatorios cumplidos:**
-> `POST /api/heroes`, `PATCH /api/heroes/:id`, `DELETE /api/heroes/:id`,
-> `POST /api/store/buy`, `POST /api/teams`, `PATCH /api/teams/:id`, etc.
 
 ---
 
