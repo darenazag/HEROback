@@ -750,6 +750,11 @@ img {
     font-weight: 700;
 }
 
+.product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 /* ── Dashboard ─────────────────────────────────────────── */
 .dashboard-stats {
     display: grid;

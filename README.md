@@ -32,7 +32,7 @@ La tienda es solo una parte de un sistema más grande, donde la lógica principa
 
 ## Previews
 
-![Landing](images/landing.png) | ![Catálogo](images/catalogo_filtro.png) | ![Detalle](images/detalle_heroe.png) | ![Tienda](images/tienda.png) | ![Login](images/login.png) | ![Registro](images/registro.png) | ![Panel_usuario](images/panle_usuario.png) | ![Panel_admin](images/panel_admin.png)
+![Landing](img/landing.png) | ![Catálogo](img/catalogo_filtro.png) | ![Detalle](img/detalle_heroe.png) | ![Tienda](img/tienda.png) | ![Login](img/login.png) | ![Registro](img/registro.png) | ![Panel_usuario](img/panle_usuario.png) | ![Panel_admin](img/panel_admin.png)
 
 
 ## Características
