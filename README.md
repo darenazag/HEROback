@@ -144,7 +144,7 @@ heroback/
 ├── docker-compose.yml        # Postgres + pgAdmin
 ├── heroback_schema.sql       # Esquema SQL de referencia
 ├── docs/
-│   └── MEMORIA.md            # Memoria académica del proyecto
+│   └── MEMORIA.pdf           # Memoria académica del proyecto
 ├── public/                   # Assets estáticos
 ├── scripts/
 │   └── seed.js               # Seed offline + live (--live)

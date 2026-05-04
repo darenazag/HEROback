@@ -17,11 +17,15 @@ block content
             h3= team.name
             button.btn.btn-sm.delete-team-btn(data-team-id=team.id) Eliminar
           .team-heroes
-            each th in team.TeamHeroes
-              if th.UserHero && th.UserHero.Hero
-                .team-hero-slot
-                  img(src=th.UserHero.Hero.image_url || '/placeholder.svg', alt=th.UserHero.Hero.name, onerror="this.src='/placeholder.svg'", title=th.UserHero.Hero.name)
-
+            if team.TeamHeroes && team.TeamHeroes.length
+              each th in team.TeamHeroes
+                if th.UserHero && th.UserHero.Hero
+                  .team-hero-slot
+                    img(src=th.UserHero.Hero.image_url || '/placeholder.svg', alt=th.UserHero.Hero.name, onerror="this.src='/placeholder.svg'", title=th.UserHero.Hero.name)
+            else
+              .empty-slots
+                p.muted Sin héroes asignados todavía
+                
     .create-team-modal(style='display:none')
       .modal-box
         h2 Nuevo equipo

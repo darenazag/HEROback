@@ -2,10 +2,16 @@ import { Team, TeamHero, UserHero, Hero } from '../models/index.js';
 
 /** @param {number} userId @returns {Promise<Team[]>} */
 export async function getMyTeams(userId) {
-    return Team.findAll({
+    const teams = await Team.findAll({
         where: { user_id: userId },
         include: [{ model: TeamHero, include: [{ model: UserHero, include: [{ model: Hero }] }] }],
         order: [['created_at', 'DESC']],
+    });
+    // Normaliza a objetos planos y garantiza que TeamHeroes siempre sea un array
+    return teams.map((t) => {
+        const plain = t.get({ plain: true });
+        plain.TeamHeroes = Array.isArray(plain.TeamHeroes) ? plain.TeamHeroes : [];
+        return plain;
     });
 }
 
