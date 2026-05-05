@@ -7,8 +7,9 @@ html(lang='es')
     if jwtToken
       meta(name='jwt-token', content=jwtToken)
     title HEROback — #{title || 'Plataforma de Superhéroes'}
-    link(rel='stylesheet', href='/styles.css')
     link(rel="icon" type="image/x-icon" href="/favicon.ico")
+    link(rel='stylesheet', href='/styles.css')
+    
     block links
     block head
   body
@@ -32,7 +33,7 @@ html(lang='es')
       block content
 
     footer.footer
-      p &copy; 2026 HEROback — Proyecto Personal Backend
+      p HEROback © 2026 — Proyecto Personal Backend
 
     script(src='/app.js')
     block scripts
