@@ -15,7 +15,6 @@ La tienda es solo una parte de un sistema más grande, donde la lógica principa
 
 ## 📋 Tabla de contenidos
 
-- [Previews](#previews)
 - [Características](#características)
 - [Requisitos](#requisitos)
 - [Instalación rápida](#instalación-rápida)
