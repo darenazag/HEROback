@@ -120,8 +120,11 @@ router.post('/perfil', requireSession, async (req, res) => {
 
 router.get('/teams', requireSession, async (req, res) => {
     try {
-        const teams = await teamService.getMyTeams(req.session.user.id);
-        res.render('teams', { teams });
+        const [teams, myHeroes] = await Promise.all([
+            teamService.getMyTeams(req.session.user.id),
+            heroService.getMyHeroes(req.session.user.id),
+        ]);
+        res.render('teams', { teams, myHeroes });
     } catch (err) {
         res.render('error', { message: err.message });
     }
