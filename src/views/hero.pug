@@ -3,7 +3,7 @@ extends layout
 block content
   .hero-detail
     .hero-detail-image
-      img(src=hero.image_url || '/placeholder.svg', alt=hero.name, onerror="this.src='/placeholder.svg'")
+      img(src=`/api/heroes/${hero.id}/image`, alt=hero.name, onerror="this.onerror=null;this.src='/placeholder.svg'")
     .hero-detail-info
       h1= hero.name
       .hero-meta

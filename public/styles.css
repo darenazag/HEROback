@@ -896,6 +896,71 @@ img {
     }
 }
 
+.team-hero-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .3rem;
+    min-width: 64px;
+}
+
+.team-hero-slot-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .25rem;
+}
+
+.team-hero-slot-name {
+    font-size: .7rem;
+    color: var(--text-muted);
+    max-width: 80px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.team-actions {
+    margin-top: .9rem;
+    padding-top: .75rem;
+    border-top: 1px dashed var(--border);
+}
+
+.add-hero-row {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.add-hero-row .add-hero-select {
+    flex: 1 1 160px;
+    min-width: 0;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: .45rem .55rem;
+    border-radius: var(--radius);
+    font-size: .85rem;
+}
+
+.add-hero-row .add-hero-select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.btn-xs {
+    font-size: .7rem;
+    padding: .2rem .55rem;
+    border-radius: 6px;
+}
+
+.muted {
+    color: var(--text-muted);
+    font-size: .85rem;
+}
+
 .empty-state {
     text-align: center;
     padding: 2rem 1rem;

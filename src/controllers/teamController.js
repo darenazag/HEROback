@@ -29,6 +29,36 @@ export async function update(req, res) {
     }
 }
 
+/** POST /api/teams/:id/heroes  body: { userHeroId } */
+export async function addHero(req, res) {
+    try {
+        const { userHeroId } = req.body;
+        if (!userHeroId) return res.status(400).json({ error: 'userHeroId es obligatorio' });
+        const teamHero = await teamService.addHero(
+            req.params.id,
+            req.user.id,
+            Number(userHeroId),
+        );
+        return res.status(201).json({ message: 'Héroe añadido al equipo', teamHero });
+    } catch (err) {
+        return res.status(400).json({ error: err.message });
+    }
+}
+
+/** DELETE /api/teams/:id/heroes/:userHeroId */
+export async function removeHero(req, res) {
+    try {
+        await teamService.removeHero(
+            req.params.id,
+            req.user.id,
+            Number(req.params.userHeroId),
+        );
+        return res.status(200).json({ message: 'Héroe eliminado del equipo' });
+    } catch (err) {
+        return res.status(400).json({ error: err.message });
+    }
+}
+
 /** DELETE /api/teams/:id */
 export async function remove(req, res) {
     try {
@@ -39,6 +69,6 @@ export async function remove(req, res) {
     }
 }
 
-export const functions = { getMyTeams, create, update, remove };
+export const functions = { getMyTeams, create, update, addHero, removeHero, remove };
 
 export default functions;

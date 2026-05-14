@@ -9,6 +9,7 @@
     "start": "node index.js",
     "seed": "node scripts/seed.js",
     "seed:live": "node scripts/seed.js --live",
+    "seed:images": "node scripts/refresh-hero-images.js",
     "db:reset": "node scripts/seed.js --reset"
   },
   "repository": {

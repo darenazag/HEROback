@@ -13,7 +13,7 @@ block content
     .hero-grid
       each hero in heroes
         a.hero-card(href=`/heroes/${hero.id}`)
-          img(src=hero.image_url || '/placeholder.svg', alt=hero.name, onerror="this.src='/placeholder.svg'")
+          img(src=`/api/heroes/${hero.id}/image`, alt=hero.name, loading='lazy', onerror="this.onerror=null;this.src='/placeholder.svg'")
           .hero-card-body
             h3= hero.name
             .hero-card-meta

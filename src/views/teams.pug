@@ -6,37 +6,74 @@ block content
       h1 Mis equipos
       button.btn#create-team-btn Crear equipo
 
+    if !myHeroes || myHeroes.length === 0
+      .empty-state
+        p.muted Aún no tienes héroes en tu colección. Visita el catálogo para añadir alguno antes de formar un equipo.
+        a.btn(href='/heroes') Ver catálogo
+
     if teams.length === 0
       .empty-state
         p Todavía no tienes equipos. ¡Crea el primero!
 
     .teams-grid
       each team in teams
-        .team-card
+        - var memberIds = (team.TeamHeroes || []).map(function(th){ return th.user_hero_id })
+        - var available = (myHeroes || []).filter(function(uh){ return memberIds.indexOf(uh.id) === -1 })
+        .team-card(data-team-id=team.id)
           .team-card-header
             h3= team.name
-            button.btn.btn-sm.delete-team-btn(data-team-id=team.id) Eliminar
+            button.btn.btn-sm.btn-outline.delete-team-btn(data-team-id=team.id) Eliminar
+
           .team-heroes
             if team.TeamHeroes && team.TeamHeroes.length
               each th in team.TeamHeroes
                 if th.UserHero && th.UserHero.Hero
                   .team-hero-slot
-                    img(src=th.UserHero.Hero.image_url || '/placeholder.svg', alt=th.UserHero.Hero.name, onerror="this.src='/placeholder.svg'", title=th.UserHero.Hero.name)
+                    img(
+                      src=`/api/heroes/${th.UserHero.Hero.id}/image`,
+                      alt=th.UserHero.Hero.name,
+                      title=th.UserHero.Hero.name,
+                      loading='lazy',
+                      onerror="this.onerror=null;this.src='/placeholder.svg'"
+                    )
+                    .team-hero-slot-info
+                      span.team-hero-slot-name= th.UserHero.Hero.name
+                      button.btn.btn-xs.btn-danger.remove-hero-btn(
+                        data-team-id=team.id,
+                        data-user-hero-id=th.user_hero_id
+                      ) Quitar
             else
               .empty-slots
                 p.muted Sin héroes asignados todavía
-                
+
+          .team-actions
+            - var canAdd = available.length > 0 && (team.TeamHeroes || []).length < 6
+            if canAdd
+              .add-hero-row
+                select.add-hero-select(data-team-id=team.id, aria-label='Elige un héroe para añadir')
+                  option(value='') -- Añadir héroe --
+                  each uh in available
+                    option(value=uh.id)= (uh.Hero && uh.Hero.name) || `Héroe #${uh.hero_id}`
+                button.btn.btn-sm.add-hero-btn(data-team-id=team.id) Añadir
+            else if (team.TeamHeroes || []).length >= 6
+              p.muted Equipo lleno (6/6)
+            else if available.length === 0
+              p.muted Todos tus héroes ya están en este equipo
+
     .create-team-modal(style='display:none')
       .modal-box
         h2 Nuevo equipo
         input#new-team-name(type='text', placeholder='Nombre del equipo')
-        button.btn#confirm-create Crear
-        button.btn.btn-outline#cancel-create Cancelar
+        .modal-actions
+          button.btn#confirm-create Crear
+          button.btn.btn-outline#cancel-create Cancelar
 
 block scripts
   script.
+    // ── Crear equipo ─────────────────────────────────────
     document.getElementById('create-team-btn').addEventListener('click', () => {
       document.querySelector('.create-team-modal').style.display = 'flex';
+      document.getElementById('new-team-name').focus();
     });
     document.getElementById('cancel-create').addEventListener('click', () => {
       document.querySelector('.create-team-modal').style.display = 'none';
@@ -49,16 +86,52 @@ block scripts
         body: JSON.stringify({ name }),
       });
       if (res.ok) location.reload();
-      else { const d = await res.json(); alert(d.error); }
+      else { const d = await res.json().catch(() => ({})); alert(d.error || 'Error al crear el equipo'); }
     });
 
+    // ── Eliminar equipo ─────────────────────────────────
     document.querySelectorAll('.delete-team-btn').forEach(btn => {
       btn.addEventListener('click', async () => {
         if (!confirm('¿Eliminar este equipo?')) return;
-        const res = await authFetch(`/api/teams/${btn.dataset.teamId}`, {
-          method: 'DELETE',
+        const res = await authFetch(`/api/teams/${btn.dataset.teamId}`, { method: 'DELETE' });
+        if (res.ok) location.reload();
+        else { const d = await res.json().catch(() => ({})); alert(d.error || 'Error'); }
+      });
+    });
+
+    // ── Añadir héroe ────────────────────────────────────
+    document.querySelectorAll('.add-hero-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const teamId = btn.dataset.teamId;
+        const select = document.querySelector(`.add-hero-select[data-team-id="${teamId}"]`);
+        const userHeroId = select && select.value;
+        if (!userHeroId) { alert('Elige un héroe'); return; }
+        btn.disabled = true;
+        const res = await authFetch(`/api/teams/${teamId}/heroes`, {
+          method: 'POST',
+          body: JSON.stringify({ userHeroId: Number(userHeroId) }),
         });
         if (res.ok) location.reload();
-        else { const d = await res.json(); alert(d.error); }
+        else {
+          btn.disabled = false;
+          const d = await res.json().catch(() => ({}));
+          alert(d.error || 'Error al añadir héroe');
+        }
+      });
+    });
+
+    // ── Quitar héroe ────────────────────────────────────
+    document.querySelectorAll('.remove-hero-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('¿Quitar este héroe del equipo?')) return;
+        const { teamId, userHeroId } = btn.dataset;
+        btn.disabled = true;
+        const res = await authFetch(`/api/teams/${teamId}/heroes/${userHeroId}`, { method: 'DELETE' });
+        if (res.ok) location.reload();
+        else {
+          btn.disabled = false;
+          const d = await res.json().catch(() => ({}));
+          alert(d.error || 'Error al quitar héroe');
+        }
       });
     });

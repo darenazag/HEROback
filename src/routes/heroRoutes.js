@@ -42,6 +42,7 @@ const HERO_SORTS = ['name', 'intelligence', 'strength', 'speed', 'durability', '
 router.get('/', queryFeatures(HERO_FILTERS, HERO_SORTS), heroController.getAll);
 
 router.get('/mis-heroes', verifyToken, heroController.getMyHeroes);
+router.get('/:id/image', heroController.getImage);
 router.get('/:id', heroController.getById);
 
 /**
